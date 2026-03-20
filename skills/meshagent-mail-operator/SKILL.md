@@ -49,7 +49,10 @@ Use this skill for mailbox administration, SMTP behavior, and inbound mail queue
 - For a room-hosted email workflow, first inspect or provision the mailbox that will own the sender address.
 - If a mailbox already exists for the room workflow, reuse its email address and queue configuration.
 - If no mailbox exists and the task requires sending mail from the room, create one before claiming the workflow is complete.
+- When creating a mailbox for a room-hosted workflow, use collision-resistant address candidates derived from the room and workflow purpose instead of generic names like `contact-form@...`.
+- If mailbox creation returns `409` and mailbox inspection returns `403`, treat that address as unavailable and try another candidate before asking the user for mailbox help.
 - Do not construct `From` as `<participant-name>@<mail-domain>`. Use the provisioned mailbox email address as the sender identity.
+- Do not treat a hardcoded mailbox-looking string as provisioned unless it came from a successful mailbox CLI result in the current project.
 - If the implementation uses the room mail agent path, let it keep the mailbox address as the default sender instead of overriding it with a synthesized address.
 - Only fall back to a custom raw SMTP implementation when the user explicitly asks for it or the MeshAgent mailbox-backed path is unavailable.
 
@@ -79,6 +82,7 @@ Use this skill for mailbox administration, SMTP behavior, and inbound mail queue
 - Do not claim that outbound mail delivery works until you distinguish message construction from SMTP/provider acceptance.
 - Do not ask for generic SMTP credentials first if the task is using the room SMTP path. Check the default room values and observed failure mode first.
 - If the workflow is a contact form or other room-hosted sender, verify that the sender identity is a real mailbox address before treating SMTP errors as provider-side issues.
+- If a valid form submission fails with `SMTPDataError`, `550`, `553`, or similar, treat that first as sender identity or authorization failure, not just generic SMTP transport failure.
 - If the workflow also creates a public route, do not copy `.meshagent.app` from CLI examples when the current runtime maps to a different managed suffix.
 - If SMTP rejects delivery, report the exact observed blocker.
 - Do not stop at "the MeshAgent CLI is not logged in" unless an actual mailbox, room queue, or related MeshAgent command fails with an authentication or authorization error.

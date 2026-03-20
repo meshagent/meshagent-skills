@@ -12,8 +12,8 @@ Use this command for any request that involves the MeshAgent CLI.
 1. Start with [SKILL.md](../skills/meshagent-cli-operator/SKILL.md).
 2. Use [SKILL.md](../skills/meshagent-webapp-builder/SKILL.md) for websites, contact forms, web handlers, and room-hosted webapp deployment.
 3. Use [SKILL.md](../skills/meshagent-mail-operator/SKILL.md) for email delivery, mailboxes, inbox evidence, or MailBot toolkits.
-4. Use [SKILL.md](../skills/meshagent-scheduling-operator/SKILL.md) for scheduled tasks, cron-based dispatch, or queue scheduling.
-5. Use [SKILL.md](../skills/meshagent-webmaster-operator/SKILL.md) for explicit route or domain administration and public hostname diagnostics.
+4. Use [SKILL.md](../skills/meshagent-scheduler/SKILL.md) for scheduled tasks, cron-based dispatch, or queue scheduling.
+5. Use [SKILL.md](../skills/meshagent-webmaster/SKILL.md) for explicit route or domain administration and public hostname diagnostics.
 6. Pick the narrowest MeshAgent command path that fits the request.
 7. If flags or subcommands are unclear, check [meshagent_cli_help.md](../skills/meshagent-cli-operator/references/meshagent_cli_help.md) first. Only run live `meshagent <path> --help` when the packaged reference is missing the needed detail or appears stale for the installed CLI.
 8. Prefer inspection before mutation.

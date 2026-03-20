@@ -26,5 +26,5 @@ Use this command when the request is primarily about project-level administratio
 3. For create or update operations, restate the exact target resource first.
 4. Verify changes with a read command immediately afterward.
 5. Use [SKILL.md](../skills/meshagent-mail-operator/SKILL.md) for mailbox provisioning tied to room inbox or MailBot workflows.
-6. Use [SKILL.md](../skills/meshagent-scheduling-operator/SKILL.md) for scheduled-task operations.
-7. Use [SKILL.md](../skills/meshagent-webmaster-operator/SKILL.md) for route management or public hostname work backing room websites.
+6. Use [SKILL.md](../skills/meshagent-scheduler/SKILL.md) for scheduled-task operations.
+7. Use [SKILL.md](../skills/meshagent-webmaster/SKILL.md) for route management or public hostname work backing room websites.

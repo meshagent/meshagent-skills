@@ -116,8 +116,9 @@ Use the following status values exactly:
 - Never return `.meshagent.app` from a `.life` environment or `.meshagent.dev` from a `.com` environment, even if packaged examples or previous failed attempts used the wrong suffix.
 - If a deployed webserver returns 500, inspect the route handler code and runtime assumptions before declaring a room or platform routing issue.
 - Use `meshagent-mail-operator` for mailbox, inbox, MailBot, or contact-form email workflows.
-- Use `meshagent-scheduling-operator` for scheduled-task creation, update, pause, resume, or deletion.
-- Use `meshagent-webmaster-operator` for websites, `meshagent webserver ...`, routes, or public hostname exposure.
+- Use `meshagent-scheduler` for scheduled-task creation, update, pause, resume, or deletion.
+- Use `meshagent-webapp-builder` for websites, contact forms, `meshagent webserver ...`, or room-hosted web handlers.
+- Use `meshagent-webmaster` for explicit route management or public hostname exposure.
 - Escalate to `USE WITH CAUTION` command families only when room-scoped commands are insufficient.
 
 ## Notes

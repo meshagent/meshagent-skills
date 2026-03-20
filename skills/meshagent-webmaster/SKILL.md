@@ -1,9 +1,9 @@
 ---
-name: meshagent-webmaster-operator
+name: meshagent-webmaster
 description: Manage MeshAgent domain mappings and use the sample MeshAgent static webserver YAML as a reference example.
 ---
 
-# MeshAgent Webmaster Operator
+# MeshAgent Webmaster
 
 Use this skill for domain mappings, what they do, and the sample static webserver YAML example.
 

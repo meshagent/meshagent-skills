@@ -42,14 +42,8 @@ SPECIALIZED_SKILLS = {
     / "skills"
     / "meshagent-mail-operator"
     / "SKILL.md",
-    "meshagent-scheduling-operator": SKILLS_ROOT
-    / "skills"
-    / "meshagent-scheduling-operator"
-    / "SKILL.md",
-    "meshagent-webmaster-operator": SKILLS_ROOT
-    / "skills"
-    / "meshagent-webmaster-operator"
-    / "SKILL.md",
+    "meshagent-scheduler": SKILLS_ROOT / "skills" / "meshagent-scheduler" / "SKILL.md",
+    "meshagent-webmaster": SKILLS_ROOT / "skills" / "meshagent-webmaster" / "SKILL.md",
 }
 SKILL_FILES = {
     "meshagent-cli-operator": DEFAULT_SKILL,
@@ -187,6 +181,20 @@ def main() -> int:
         errors.append(
             "command_groups.md references commands not present in meshagent --help: "
             + ", ".join(missing)
+        )
+    if (
+        "Use `meshagent-webapp-builder` for websites, contact forms, `meshagent webserver ...`, or room-hosted web handlers."
+        not in command_groups_text
+    ):
+        errors.append(
+            "command_groups.md is missing the required webapp-builder routing rule for websites and meshagent webserver work"
+        )
+    if (
+        "Use `meshagent-webmaster` for explicit route management or public hostname exposure."
+        not in command_groups_text
+    ):
+        errors.append(
+            "command_groups.md is missing the required webmaster routing rule for explicit route management"
         )
     for skill_name, skill_path in SKILL_FILES.items():
         current_skill_text = load_text(skill_path)

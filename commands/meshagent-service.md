@@ -21,4 +21,4 @@ Use this command for MeshAgent service lifecycle and service-adjacent runtime op
 2. Prefer `validate`, `render-template`, `show`, or `list` before destructive or state-changing commands.
 3. After deploy or update, verify the resulting service state and surface any follow-up steps.
 4. Use [SKILL.md](../skills/meshagent-webapp-builder/SKILL.md) for websites, contact forms, `meshagent webserver ...`, and room-hosted webapp deployment.
-5. Use [SKILL.md](../skills/meshagent-webmaster-operator/SKILL.md) for explicit route/domain administration or public hostname diagnostics.
+5. Use [SKILL.md](../skills/meshagent-webmaster/SKILL.md) for explicit route/domain administration or public hostname diagnostics.

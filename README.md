@@ -25,9 +25,9 @@ The package currently has one general CLI skill plus five specialized skills:
   Build and verify deployable room-hosted web applications, including contact forms, public handlers, and mailbox-backed outbound email workflows.
 - `skills/meshagent-mail-operator/`
   Mailbox administration, room SMTP behavior, inbound queue inspection, and mailbox-backed sender guidance for room-hosted mail workflows.
-- `skills/meshagent-scheduling-operator/`
+- `skills/meshagent-scheduler/`
   `meshagent scheduled-task ...` workflows and queue-delivery verification.
-- `skills/meshagent-webmaster-operator/`
+- `skills/meshagent-webmaster/`
   Route/domain mapping behavior and the static webserver YAML reference example.
 
 The package also exposes command entrypoints for common request classes:
@@ -83,11 +83,19 @@ Current files in this package:
   SDK/docs/example lookup skill for the preloaded `/src/meshagent-sdk` checkout.
 - `skills/meshagent-webapp-builder/SKILL.md`
   Deployable room webapp build, verification, and contact-form workflow skill.
+- `skills/meshagent-webapp-builder/references/contact_form_example.py`
+  Known-good contact-form handler reference using real room SMTP defaults and a mailbox-backed sender placeholder.
+- `skills/meshagent-webapp-builder/references/mailbox_backed_sender.md`
+  Mailbox provisioning and sender-identity reference for room-hosted contact forms.
+- `skills/meshagent-webapp-builder/references/minimal_webserver.yaml`
+  Minimal deployable public webserver YAML example.
+- `skills/meshagent-webapp-builder/references/verification_checklist.md`
+  Short completion checklist for deployed contact-form sites.
 - `skills/meshagent-mail-operator/SKILL.md`
   Mailbox, SMTP, queue, and room-hosted outbound mail workflow skill.
-- `skills/meshagent-scheduling-operator/SKILL.md`
+- `skills/meshagent-scheduler/SKILL.md`
   Scheduled-task and queue-delivery skill.
-- `skills/meshagent-webmaster-operator/SKILL.md`
+- `skills/meshagent-webmaster/SKILL.md`
   Route/domain mapping and static webserver reference skill.
 
 ## Packaged references

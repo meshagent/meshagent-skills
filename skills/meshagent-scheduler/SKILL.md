@@ -1,9 +1,9 @@
 ---
-name: meshagent-scheduling-operator
+name: meshagent-scheduler
 description: Manage MeshAgent scheduled tasks and explain how they enqueue JSON payloads onto queues for later consumption.
 ---
 
-# MeshAgent Scheduling Operator
+# MeshAgent Scheduler
 
 Use this skill for `meshagent scheduled-task ...` workflows and for verifying the queue behavior they trigger.
 
