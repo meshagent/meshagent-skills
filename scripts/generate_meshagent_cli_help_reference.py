@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the packaged MeshAgent CLI help reference from an installed meshagent binary."""
+"""Generate the packaged MeshAgent CLI help reference from an installed meshagent binary."""
 
 import argparse
 import json
