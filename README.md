@@ -15,12 +15,14 @@ The package is designed so a live room agent can answer MeshAgent workflow reque
 
 ## Current system
 
-The package currently has one general CLI skill plus four specialized skills:
+The package currently has one general CLI skill plus five specialized skills:
 
 - `skills/meshagent-cli-operator/`
   General MeshAgent CLI routing, command composition, live-room execution rules, and packaged CLI reference material.
-- `skills/meshagent-sdk-operator/`
+- `skills/meshagent-sdk-researcher/`
   Guidance for using the preloaded `/src/meshagent-sdk` checkout, docs, examples, and source to answer SDK/API questions.
+- `skills/meshagent-webapp-builder/`
+  Build and verify deployable room-hosted web applications, including contact forms, public handlers, and mailbox-backed outbound email workflows.
 - `skills/meshagent-mail-operator/`
   Mailbox administration, room SMTP behavior, inbound queue inspection, and mailbox-backed sender guidance for room-hosted mail workflows.
 - `skills/meshagent-scheduling-operator/`
@@ -77,8 +79,10 @@ Current files in this package:
   Curated command-family routing reference.
 - `skills/meshagent-cli-operator/references/meshagent_cli_help.md`
   Generated recursive CLI help reference.
-- `skills/meshagent-sdk-operator/SKILL.md`
+- `skills/meshagent-sdk-researcher/SKILL.md`
   SDK/docs/example lookup skill for the preloaded `/src/meshagent-sdk` checkout.
+- `skills/meshagent-webapp-builder/SKILL.md`
+  Deployable room webapp build, verification, and contact-form workflow skill.
 - `skills/meshagent-mail-operator/SKILL.md`
   Mailbox, SMTP, queue, and room-hosted outbound mail workflow skill.
 - `skills/meshagent-scheduling-operator/SKILL.md`
@@ -104,7 +108,9 @@ The current skills assume the following when they are installed into a live room
 - room-scoped work should prefer the existing MeshAgent CLI session before asking for auth again
 - `MESHAGENT_ROOM` identifies the current room when a command needs `--room`
 - `MESHAGENT_API_URL` can be used to derive the managed public hostname family for routes and published sites
-- room-owned, user-visible artifacts should live under `/data`
+- room-owned runtime artifacts should live under `/data`
+- deployable `meshagent webserver` source trees should live under the current working directory for that runtime, with `--website-path` used as the room-storage destination
+- website tasks are only complete after a live HTTP smoke test, not merely after file generation or deploy success
 - the MeshAgent SDK checkout is preloaded at `/src/meshagent-sdk` for SDK/docs lookup
 
 These are package-level conventions enforced by the current skill text. They are intentionally documented here because the skills depend on them for live-room behavior.

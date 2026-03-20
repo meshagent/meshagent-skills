@@ -1,9 +1,9 @@
 ---
-name: meshagent-sdk-operator
-description: Use the preloaded MeshAgent SDK checkout and bundled docs/examples to look up APIs and implementation patterns before writing code.
+name: meshagent-sdk-researcher
+description: Use the preloaded MeshAgent SDK checkout and bundled docs/examples to research APIs and implementation patterns before writing code.
 ---
 
-# MeshAgent SDK Operator
+# MeshAgent SDK Researcher
 
 Use this skill when the task is mainly about how to use the MeshAgent SDK in code.
 

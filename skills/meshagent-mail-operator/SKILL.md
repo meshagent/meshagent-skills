@@ -52,7 +52,6 @@ Use this skill for mailbox administration, SMTP behavior, and inbound mail queue
 - Do not construct `From` as `<participant-name>@<mail-domain>`. Use the provisioned mailbox email address as the sender identity.
 - If the implementation uses the room mail agent path, let it keep the mailbox address as the default sender instead of overriding it with a synthesized address.
 - Only fall back to a custom raw SMTP implementation when the user explicitly asks for it or the MeshAgent mailbox-backed path is unavailable.
-- If a room website or service needs to send email, keep its durable assets under `/data` rather than `/tmp` or `/src`.
 
 ## Queue inspection
 
@@ -81,6 +80,5 @@ Use this skill for mailbox administration, SMTP behavior, and inbound mail queue
 - Do not ask for generic SMTP credentials first if the task is using the room SMTP path. Check the default room values and observed failure mode first.
 - If the workflow is a contact form or other room-hosted sender, verify that the sender identity is a real mailbox address before treating SMTP errors as provider-side issues.
 - If the workflow also creates a public route, do not copy `.meshagent.app` from CLI examples when the current runtime maps to a different managed suffix.
-- If tool calls fail on `.` `/` `/tmp` or `/src`, switch to room-visible paths under `/data` instead of retrying the same workflow against non-room file paths.
 - If SMTP rejects delivery, report the exact observed blocker.
 - Do not stop at "the MeshAgent CLI is not logged in" unless an actual mailbox, room queue, or related MeshAgent command fails with an authentication or authorization error.
