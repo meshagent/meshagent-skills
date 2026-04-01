@@ -15,7 +15,7 @@ The package is designed so a live room agent can answer MeshAgent workflow reque
 
 ## Current system
 
-The package currently has one general CLI skill plus five specialized skills:
+The package currently has one general CLI skill plus seven specialized skills:
 
 - `skills/meshagent-cli-operator/`
   General MeshAgent CLI routing, command composition, live-room execution rules, and packaged CLI reference material.
@@ -29,6 +29,10 @@ The package currently has one general CLI skill plus five specialized skills:
   `meshagent scheduled-task ...` workflows and queue-delivery verification.
 - `skills/meshagent-webmaster/`
   Route/domain mapping behavior and the static webserver YAML reference example.
+- `skills/meshagent-docs-maintainer/`
+  Docs-writing and migration skill for code-first docs updates, source-backed examples, and migration artifact upkeep.
+- `skills/meshagent-docs-auditor/`
+  Read-only docs audit skill for coverage, drift, relocation, and public-surface checks.
 
 The package also exposes command entrypoints for common request classes:
 
@@ -97,6 +101,10 @@ Current files in this package:
   Scheduled-task and queue-delivery skill.
 - `skills/meshagent-webmaster/SKILL.md`
   Route/domain mapping and static webserver reference skill.
+- `skills/meshagent-docs-maintainer/SKILL.md`
+  Docs maintenance skill aligned to the migration artifacts, public-surface metadata, and source-backed example rules.
+- `skills/meshagent-docs-auditor/SKILL.md`
+  Read-only docs audit skill for coverage and drift reporting.
 
 ## Packaged references
 
