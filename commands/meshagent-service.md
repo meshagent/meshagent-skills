@@ -1,5 +1,5 @@
 ---
-description: Service and deployment workflows in MeshAgent, including service specs, templates, MCP bridges, helper services, and webservers.
+description: Service and deployment workflows in MeshAgent, including service specs, templates, MCP bridges, and webservers.
 argument-hint: "<service or deployment task>"
 ---
 
@@ -11,7 +11,6 @@ Use this command for MeshAgent service lifecycle and service-adjacent runtime op
 
 - `meshagent service ...`
 - `meshagent mcp ...`
-- `meshagent helper ...`
 - `meshagent webserver ...`
 - `meshagent codex ...`
 

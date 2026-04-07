@@ -78,8 +78,6 @@ Use the following status values exactly:
   Use only when the room task requires route configuration backing the current room's service exposure. Prefer the managed hostname suffix derived from `MESHAGENT_API_URL` by default in this environment.
 - `meshagent scheduled-task`
   Use only when the room task requires scheduled execution tied to the current room's workflow.
-- `meshagent helper`
-  Use only when the user explicitly needs developer helper HTTP services such as hosted schemas or toolkits.
 
 ### `DON'T USE`
 

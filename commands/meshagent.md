@@ -27,5 +27,5 @@ This command is the generic entrypoint for:
 - auth and setup
 - projects, api keys, secrets, routes, webhooks, mailboxes, and scheduled tasks
 - rooms, room APIs, ports, sessions, calls, and participant tokens
-- services, MCP bridges, webservers, and helper services
+- services, MCP bridges, and webservers
 - chatbot, worker, task-runner, mailbot, voicebot, process, codex, multi, and meeting-transcriber flows
