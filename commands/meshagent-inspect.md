@@ -13,7 +13,6 @@ Use this command for non-destructive MeshAgent inspection and troubleshooting.
 - `meshagent auth whoami`
 - `meshagent session ...`
 - `meshagent token ...`
-- `meshagent call ...`
 - `meshagent rooms ...`
 - `meshagent room ...`
 - `meshagent service show`

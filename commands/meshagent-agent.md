@@ -1,5 +1,5 @@
 ---
-description: Join, run, or deploy MeshAgent agent runtimes including chatbot, worker, task-runner, mailbot, voicebot, process, codex, multi, and meeting-transcriber.
+description: Join or deploy public MeshAgent agent runtimes such as process, voicebot, and meeting-transcriber.
 argument-hint: "<agent runtime task>"
 ---
 
@@ -9,14 +9,8 @@ Use this command for agent runtime orchestration.
 
 ## Primary command groups
 
-- `meshagent chatbot ...`
-- `meshagent worker ...`
-- `meshagent task-runner ...`
-- `meshagent mailbot ...`
 - `meshagent voicebot ...`
 - `meshagent process ...`
-- `meshagent codex ...`
-- `meshagent multi ...`
 - `meshagent meeting-transcriber ...`
 
 ## Operating rules

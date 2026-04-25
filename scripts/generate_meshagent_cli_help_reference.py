@@ -95,6 +95,10 @@ def parse_commands(help_text: str) -> list[str]:
     return commands
 
 
+def normalize_block(text: str) -> str:
+    return "\n".join(line.rstrip() for line in text.splitlines()).rstrip()
+
+
 def run_help(
     meshagent_bin: str, path: list[str], timeout_seconds: int
 ) -> tuple[int, str, bool]:
@@ -107,12 +111,12 @@ def run_help(
             timeout=timeout_seconds,
         )
         output = completed.stdout if completed.stdout else completed.stderr
-        return completed.returncode, output.rstrip(), False
+        return completed.returncode, normalize_block(output), False
     except subprocess.TimeoutExpired as exc:
         output = (exc.stdout or "") or (exc.stderr or "")
         if isinstance(output, bytes):
             output = output.decode("utf-8", errors="replace")
-        output = output.rstrip()
+        output = normalize_block(output)
         return 124, output, True
 
 

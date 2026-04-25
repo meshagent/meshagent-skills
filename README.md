@@ -37,11 +37,11 @@ The package also exposes command entrypoints for common request classes:
 - `commands/meshagent-room.md`
   Room lifecycle and room-scoped operations.
 - `commands/meshagent-service.md`
-  Services, deploys, MCP, helpers, and webserver-adjacent work.
+  Services, image builds/deploys, MCP, and service-adjacent work.
 - `commands/meshagent-project.md`
   Project-scoped administration such as routes, mailboxes, and scheduled tasks.
 - `commands/meshagent-agent.md`
-  Agent runtime orchestration such as chatbot, worker, mailbot, and process runtimes.
+  Agent runtime orchestration such as process, voicebot, and meeting-transcriber.
 - `commands/meshagent-inspect.md`
   Read-only inspection and diagnostics.
 

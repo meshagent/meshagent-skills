@@ -55,6 +55,7 @@ RUNTIME_REFERENCES = (
     "references/meshagent_cli_help.md",
 )
 SKILLS_WITHOUT_CLI_REFERENCES = {"meshagent-sdk-researcher"}
+ALLOWED_NON_HELP_COMMAND_REFERENCES = {"webserver"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -143,7 +144,11 @@ def main() -> int:
     top_level = parse_top_level_commands(help_proc.stdout)
     command_groups_text = load_text(DEFAULT_COMMAND_GROUPS)
     referenced = referenced_top_level_commands(command_groups_text)
-    missing = sorted(cmd for cmd in referenced if cmd not in top_level)
+    missing = sorted(
+        cmd
+        for cmd in referenced
+        if cmd not in top_level and cmd not in ALLOWED_NON_HELP_COMMAND_REFERENCES
+    )
 
     readme_text = load_text(DEFAULT_README)
     plugin_text = load_text(DEFAULT_PLUGIN)

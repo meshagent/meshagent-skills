@@ -21,14 +21,16 @@ Use the following status values exactly:
 
 ### `USE`
 
-- `meshagent call`
-  Use for room-scoped inspection, verification, or targeted invocation when the task is about the current room or a room-local agent/tool.
 - `meshagent session`
   Use for diagnostics, active session inspection, and troubleshooting related to the current room workflow.
 - `meshagent token`
   Use for token inspection or troubleshooting when it is directly relevant to the current room task. Do not use `meshagent token generate`.
 - `meshagent service`
   Use for service validation, rendering, inspection, and deployment when the target is the current room or a room-specific service flow. If a `--room` flag is used, it must match the current room. Do not use project-global service modes.
+- `meshagent build`
+  Use for room-scoped container image builds that should run inside the current room.
+- `meshagent deploy`
+  Use for room-scoped service deployment from an image tag or from a local build context in the current room.
 - `meshagent mcp`
   Use for room-relevant MCP bridge or connector work when it supports the current room workflow.
 - `meshagent rooms`
@@ -37,24 +39,10 @@ Use the following status values exactly:
   Use for transcriber runtime flows when the task is clearly about deploying or operating that runtime.
 - `meshagent port`
   Use for room port inspection and exposure work tied to the current room. If a `--room` flag is used, it must match the current room.
-- `meshagent webserver`
-  Use for room webserver deployment and web content hosting tasks. If a `--room` flag is used, it must match the current room. Prefer the managed hostname suffix derived from `MESHAGENT_API_URL` by default in this environment.
-- `meshagent codex`
-  Use for Codex-backed runtime operations that stay within room scope.
-- `meshagent multi`
-  Use for multi-agent runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
 - `meshagent voicebot`
   Use for voicebot runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
-- `meshagent chatbot`
-  Use for chatbot runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
 - `meshagent process`
   Use for process-backed room agents in the current room. If a `--room` flag is used, it must match the current room.
-- `meshagent mailbot`
-  Use for mailbot runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
-- `meshagent task-runner`
-  Use for task-runner deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
-- `meshagent worker`
-  Use for worker runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
 - `meshagent room`
   Use first for room-scoped agents, services, storage, messaging, database, memory, containers, sync, and developer operations in the current room.
 
@@ -62,6 +50,10 @@ Use the following status values exactly:
 
 - `meshagent version`
   Use only when the user explicitly asks about the installed CLI version or version-specific behavior.
+- `meshagent ask`
+  Use only for one-shot LLM router tasks when the user explicitly wants that path instead of a room agent or service workflow.
+- `meshagent llm`
+  Use only for local LLM proxy inspection or setup tied directly to the current task.
 - `meshagent project`
   Use only for project context needed to complete room work. Subcommand policy:
   - `meshagent project list`: allowed for read-only discovery of available projects.
@@ -99,7 +91,7 @@ Use the following status values exactly:
 ## Preferred routing
 
 - For room-scoped tasks, start with `meshagent room ...`.
-- For runtime deployment tasks, prefer the specific runtime family such as `meshagent process ...`, `meshagent chatbot ...`, `meshagent worker ...`, `meshagent webserver ...`, or `meshagent multi ...`.
+- For runtime deployment tasks, prefer public room-scoped command families such as `meshagent process ...`, `meshagent voicebot ...`, `meshagent meeting-transcriber ...`, `meshagent build ...`, or `meshagent deploy ...`.
 - Use `meshagent service ...` when the task is specifically about service specs, templates, validation, rendering, or deployment mechanics.
 - Use `meshagent rooms ...` only when the user explicitly wants room lifecycle changes such as create/list/update/delete.
 - If a command accepts `--room`, do not target any room other than `MESHAGENT_ROOM`.
