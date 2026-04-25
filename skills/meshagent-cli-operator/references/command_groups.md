@@ -56,7 +56,7 @@ Use the following status values exactly:
 - `meshagent worker`
   Use for worker runtime deployment and operation in the current room. If a `--room` flag is used, it must match the current room.
 - `meshagent room`
-  Use first for room-scoped agents, services, storage, messaging, database, memory, containers, sync, and developer operations in the current room.
+  Use first for room-scoped agents, services, storage, messaging, dataset, memory, containers, sync, and developer operations in the current room.
 
 ### `USE WITH CAUTION`
 
@@ -121,6 +121,6 @@ Use the following status values exactly:
 
 ## Notes
 
-- `meshagent room ...` is the deepest public area. Use it for room-scoped agents, storage, messaging, services, database tables, memories, containers, and sync.
+- `meshagent room ...` is the deepest public area. Use it for room-scoped agents, storage, messaging, services, dataset tables, memories, containers, and sync.
 - For this skill, prefer room-scoped commands over project-scoped commands whenever both could satisfy the request.
 - The help reference documents command names and flags. In this runtime, prefer `/usr/bin/meshagent` as the executable path.

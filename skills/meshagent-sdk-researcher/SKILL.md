@@ -19,7 +19,7 @@ Use this skill when the task is mainly about how to use the MeshAgent SDK in cod
 - In the live room image, the MeshAgent SDK checkout is preloaded at `/src/meshagent-sdk`.
 - Start with `/src/meshagent-sdk/meshagent-docs` for documentation.
 - Use `/src/meshagent-sdk/meshagent-docs/examples` when you need concrete implementation examples.
-- Use `/src/meshagent-sdk/meshagent-docs/room_api` when the question is about room client APIs such as agents, queues, storage, messaging, database, or services.
+- Use `/src/meshagent-sdk/meshagent-docs/room_api` when the question is about room client APIs such as agents, queues, storage, messaging, dataset, or services.
 - If the docs and examples are unclear, inspect the actual SDK source under `/src/meshagent-sdk`.
 
 ## Operating rules

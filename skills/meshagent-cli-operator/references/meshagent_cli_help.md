@@ -20,11 +20,12 @@ $ meshagent --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ version              Print the version                                       │
 │ setup                Perform initial login and project/api key activation.   │
-│ call                 Trigger agent/tool calls via URL                        │
 │ auth                 Authenticate to meshagent                               │
 │ project              Manage or activate your meshagent projects              │
 │ api-key              Manage or activate api-keys for your project            │
 │ session              Inspect recent sessions and events                      │
+│ ask                  Send a one-shot prompt through the LLM router           │
+│ launch               Launch CLI apps through MeshAgent                       │
 │ token                Generate participant tokens (JWTs)                      │
 │ webhook              Manage project webhooks                                 │
 │ service              Manage services for your project                        │
@@ -32,15 +33,19 @@ $ meshagent --help
 │ secret               Manage secrets for your project.                        │
 │ rooms                Create, list, and manage rooms in a project             │
 │ mailbox              Manage mailboxes for your project                       │
+│ feed                 Manage feeds for your project                           │
+│ subscription         Manage feed subscriptions for your project              │
 │ route                Manage routes for your project                          │
+│ registry             Manage registries for your project                      │
+│ build                Build a container image inside a room                   │
+│ deploy               Create or update a room service from an image           │
 │ scheduled-task       Manage scheduled tasks for your project                 │
 │ meeting-transcriber  Join a meeting transcriber to a room                    │
 │ port                 Port forwarding into room containers                    │
-│ multi                Connect agents and tools to a room                      │
 │ voicebot             Join a voicebot to a room                               │
 │ process              Join a process-backed agent to a room                   │
 │ room                 Operate within a room                                   │
-│ image                Build and pack OCI images                               │
+│ llm                  Local LLM proxy utilities                               │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -65,30 +70,9 @@ Usage: meshagent setup [OPTIONS]
   Perform initial login and project/api key activation.
 
 Options:
-  --help  Show this message and exit.
-```
-
-## `meshagent call`
-
-```console
-$ meshagent call --help
-                                                                                
- Usage: meshagent call [OPTIONS] COMMAND [ARGS]...                              
-                                                                                
- Trigger agent/tool calls via URL                                               
-                                                                                
-╭─ Options ────────────────────────────────────────────────────────────────────╮
-│ --install-completion          Install completion for the current shell.      │
-│ --show-completion             Show completion for the current shell, to copy │
-│                               it or customize the installation.              │
-│ --help                        Show this message and exit.                    │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ tool     Send a call request to a tool webhook URL                           │
-│ agent    Send a call request to an agent webhook URL                         │
-│ toolkit  Send a call request to a toolkit webhook URL                        │
-│ schema   Send a call request to a schema webhook URL                         │
-╰──────────────────────────────────────────────────────────────────────────────╯
+  --api-url TEXT  Persist this API URL on the saved profile and use it for
+                  setup login.
+  --help          Show this message and exit.
 ```
 
 ## `meshagent auth`
@@ -109,7 +93,9 @@ $ meshagent auth --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ login                                                                        │
 │ logout                                                                       │
+│ switch                                                                       │
 │ whoami                                                                       │
+│ token                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -181,6 +167,50 @@ $ meshagent session --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## `meshagent ask`
+
+```console
+$ meshagent ask --help
+                                                                                
+ Usage: meshagent ask [OPTIONS]                                                 
+                                                                                
+ Send a one-shot LLM prompt.                                                    
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --project-id                  TEXT  A MeshAgent project id. If empty, the    │
+│                                     activated project will be used.          │
+│                                     [default: (dynamic)]                     │
+│ --message             -m      TEXT  Prompt to send to the LLM                │
+│ --format                      TEXT  Output format for non-interactive        │
+│                                     responses.                               │
+│                                     [default: text]                          │
+│ --model                       TEXT  Name of the LLM model to use             │
+│                                     [default: gpt-5.4]                       │
+│ --install-completion                Install completion for the current       │
+│                                     shell.                                   │
+│ --show-completion                   Show completion for the current shell,   │
+│                                     to copy it or customize the              │
+│                                     installation.                            │
+│ --help                              Show this message and exit.              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent launch`
+
+```console
+$ meshagent launch --help
+Usage: meshagent launch [OPTIONS] COMMAND [ARGS]...
+
+  Launch supported CLI apps through MeshAgent.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  claude  Launch Claude through MeshAgent for the active project.
+  codex   Launch Codex through MeshAgent for the active project.
+```
+
 ## `meshagent token`
 
 ```console
@@ -193,8 +223,7 @@ $ meshagent token --help
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │    --project-id                  TEXT  A MeshAgent project id. If empty, the │
 │                                        activated project will be used.       │
-│                                        [default:                             │
-│                                        203b1bf9-72c9-4022-bfaa-55d6f656dfeb] │
+│                                        [default: (dynamic)]                  │
 │    --output              -o      TEXT  File path to a file                   │
 │ *  --input               -i      TEXT  File path to a token spec [required]  │
 │    --key                         TEXT  an api key to sign the token with     │
@@ -364,6 +393,56 @@ $ meshagent mailbox --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## `meshagent feed`
+
+```console
+$ meshagent feed --help
+                                                                                
+ Usage: meshagent feed [OPTIONS] COMMAND [ARGS]...                              
+                                                                                
+ Manage feeds for your project                                                  
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create      Create a feed.                                                   │
+│ update      Update a feed.                                                   │
+│ show        Show feed details.                                               │
+│ list        List feeds for the project.                                      │
+│ delete      Delete a feed.                                                   │
+│ send        Publish a single JSON message to a feed.                         │
+│ send-batch  Publish a JSONL file to a feed.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent subscription`
+
+```console
+$ meshagent subscription --help
+                                                                                
+ Usage: meshagent subscription [OPTIONS] COMMAND [ARGS]...                      
+                                                                                
+ Manage feed subscriptions for your project                                     
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create  Create a feed subscription.                                          │
+│ update  Update a feed subscription.                                          │
+│ show    Show feed subscription details.                                      │
+│ list    List subscriptions for a feed.                                       │
+│ delete  Delete a feed subscription.                                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
 ## `meshagent route`
 
 ```console
@@ -385,6 +464,179 @@ $ meshagent route --help
 │ show    Show route details.                                                  │
 │ list    List routes for the project.                                         │
 │ delete  Delete a route.                                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent registry`
+
+```console
+$ meshagent registry --help
+                                                                                
+ Usage: meshagent registry [OPTIONS] COMMAND [ARGS]...                          
+                                                                                
+ Manage registries for your project                                             
+                                                                                
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create  Create a project registry repository.                                │
+│ update  Update a project registry repository.                                │
+│ show    Show registry details.                                               │
+│ list    List registries for the project.                                     │
+│ delete  Delete a project registry repository by id or name.                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent build`
+
+```console
+$ meshagent build --help
+                                                                                
+ Usage: meshagent build [OPTIONS] PATH                                          
+                                                                                
+ Build a container image inside a room.                                         
+                                                                                
+╭─ Arguments ──────────────────────────────────────────────────────────────────╮
+│ *    pack      PATH  Local directory to stream as the build context. Format  │
+│                      '<path>[:<mount>]'. Defaults mount to /context.         │
+│                      [required]                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│    --project-id                          TEXT  A MeshAgent project id. If    │
+│                                                empty, the activated project  │
+│                                                will be used.                 │
+│    --room                                TEXT  Room name                     │
+│ *  --tag                                 TEXT  Image tag to build. Supports  │
+│                                                <repository>:<tag>,           │
+│                                                <project-key>/<repository>:<… │
+│                                                or                            │
+│                                                <registry>/<project-key>/<re… │
+│                                                Shorthand forms resolve       │
+│                                                against the configured        │
+│                                                MeshAgent registry.           │
+│                                                [required]                    │
+│    --context-path                        TEXT  Build context path inside the │
+│                                                streamed build context        │
+│                                                (absolute path). Defaults to  │
+│                                                the PATH mount path.          │
+│    --dockerfile-path                     TEXT  Optional Dockerfile path      │
+│                                                inside the streamed build     │
+│                                                context (absolute path).      │
+│    --builder-name                        TEXT  Optional reusable builder     │
+│                                                name for streamed local       │
+│                                                builds.                       │
+│    --private            --public               Whether the build container   │
+│                                                is private to the participant │
+│                                                [default: public]             │
+│    --optimize           --no-optimize          Whether to optimize room      │
+│                                                image outputs to eStargz      │
+│                                                before publishing. Enabled by │
+│                                                default.                      │
+│                                                [default: optimize]           │
+│    --cred                                TEXT  Docker creds                  │
+│                                                (username,password) or        │
+│                                                (registry,username,password)  │
+│    --help                                      Show this message and exit.   │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent deploy`
+
+```console
+$ meshagent deploy --help
+                                                                                
+ Usage: meshagent deploy [OPTIONS] [PATH]                                       
+                                                                                
+ Create or update a room service from an image, optionally building it first.   
+                                                                                
+╭─ Arguments ──────────────────────────────────────────────────────────────────╮
+│   pack      [PATH]  Local directory to stream as the build context before    │
+│                     deploy. Format '<path>[:<mount>]'. Defaults mount to     │
+│                     /context.                                                │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│    --project-id                            TEXT  A MeshAgent project id. If  │
+│                                                  empty, the activated        │
+│                                                  project will be used.       │
+│    --room                                  TEXT  Room name                   │
+│ *  --tag                                   TEXT  Image tag to deploy, e.g.   │
+│                                                  repo/name:tag. When used    │
+│                                                  with PATH, shorthand        │
+│                                                  <repository>:<tag> and      │
+│                                                  <project-key>/<repository>… │
+│                                                  resolve against the         │
+│                                                  configured MeshAgent        │
+│                                                  registry.                   │
+│                                                  [required]                  │
+│    --context-path                          TEXT  Build context path inside   │
+│                                                  the packed build context    │
+│                                                  (absolute path). Only used  │
+│                                                  with PATH.                  │
+│    --dockerfile-path                       TEXT  Optional Dockerfile path    │
+│                                                  inside the packed build     │
+│                                                  context (absolute path).    │
+│                                                  Only used with PATH.        │
+│    --optimize             --no-optimize          Whether to optimize room    │
+│                                                  image outputs to eStargz    │
+│                                                  during the build stage.     │
+│                                                  Enabled by default. Only    │
+│                                                  used with PATH.             │
+│                                                  [default: optimize]         │
+│    --cred                                  TEXT  Docker creds                │
+│                                                  (username,password) or      │
+│                                                  (registry,username,passwor… │
+│    --builder-name                          TEXT  Optional reusable builder   │
+│                                                  name for streamed local     │
+│                                                  pack builds.                │
+│    --domain                                TEXT  Create or update a room     │
+│                                                  route for the deployed      │
+│                                                  service. Requires exactly   │
+│                                                  one published service port. │
+│    --liveness                              TEXT  HTTP path to use for        │
+│                                                  service liveness checks.    │
+│                                                  Defaults to / for new or    │
+│                                                  missing HTTP liveness       │
+│                                                  paths.                      │
+│    --room-mount                            TEXT  Mount room storage as       │
+│                                                  <source>:<mount>[:ro|rw]    │
+│    --project-mount                         TEXT  Mount project storage as    │
+│                                                  <source>:<mount>[:ro|rw]    │
+│    --empty-dir-mount                       TEXT  Mount empty dir at          │
+│                                                  <mount>[:ro|rw]             │
+│    --image-mount                           TEXT  Mount image as              │
+│                                                  <image>=<mount>[:ro|rw]     │
+│    --env              -e                   TEXT  Set environment variable as │
+│                                                  KEY=VALUE                   │
+│    --env-secret                            TEXT  Set environment variable    │
+│                                                  from a room secret as       │
+│                                                  NAME=SECRET_ID              │
+│    --identity                              TEXT  Identity name to use for    │
+│                                                  --meshagent-token and       │
+│                                                  --env-secret. Defaults to   │
+│                                                  the current token identity  │
+│                                                  or the derived service      │
+│                                                  name.                       │
+│    --meshagent-token                       TEXT  Inject MESHAGENT_TOKEN      │
+│                                                  using userDefault,          │
+│                                                  agentDefault, full, or a    │
+│                                                  JSON ApiScope object.       │
+│    --private              --public               Whether published service   │
+│                                                  ports should stay private   │
+│                                                  or be public when they are  │
+│                                                  created or updated.         │
+│                                                  Defaults to private.        │
+│                                                  [default: private]          │
+│    --wait                 --no-wait              Wait for the deployed       │
+│                                                  service to start, stream    │
+│                                                  container logs, and verify  │
+│                                                  the route liveness URL when │
+│                                                  --domain is provided.       │
+│                                                  [default: wait]             │
+│    --help                                        Show this message and exit. │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -444,8 +696,7 @@ $ meshagent port --help
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │    --project-id                  TEXT  A MeshAgent project id. If empty, the │
 │                                        activated project will be used.       │
-│                                        [default:                             │
-│                                        203b1bf9-72c9-4022-bfaa-55d6f656dfeb] │
+│                                        [default: (dynamic)]                  │
 │ *  --room                -r      TEXT  Room name containing the target       │
 │                                        container                             │
 │                                        [required]                            │
@@ -459,29 +710,6 @@ $ meshagent port --help
 │                                        shell, to copy it or customize the    │
 │                                        installation.                         │
 │    --help                              Show this message and exit.           │
-╰──────────────────────────────────────────────────────────────────────────────╯
-```
-
-## `meshagent multi`
-
-```console
-$ meshagent multi --help
-                                                                                
- Usage: meshagent multi [OPTIONS] COMMAND [ARGS]...                             
-                                                                                
- Connect agents and tools to a room                                             
-                                                                                
-╭─ Options ────────────────────────────────────────────────────────────────────╮
-│ --install-completion          Install completion for the current shell.      │
-│ --show-completion             Show completion for the current shell, to copy │
-│                               it or customize the installation.              │
-│ --help                        Show this message and exit.                    │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ spec     Generate a combined service spec from multiple subcommands.         │
-│ deploy   Deploy a combined service from multiple subcommands.                │
-│ service                                                                      │
-│ join     Run multiple join commands together in one process.                 │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -550,28 +778,29 @@ $ meshagent room --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ agent      Interact with agents and toolkits                                 │
+│ agents     Interact with agents and toolkits                                 │
 │ secret     Manage secrets in a room                                          │
 │ queue      Use queues in a room                                              │
 │ messaging  Send and receive messages                                         │
 │ storage    Manage storage for a room                                         │
 │ service    Manage services in a room                                         │
 │ developer  Developer utilities for a room                                    │
-│ database   Manage database tables in a room                                  │
+│ dataset    Manage dataset tables in a room                                   │
 │ memory     Manage memories in a room                                         │
 │ container  Manage containers and images in a room                            │
 │ sync       Inspect and update mesh documents in a room                       │
+│ connect    Connect to a room and run a local command with room auth env      │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-## `meshagent image`
+## `meshagent llm`
 
 ```console
-$ meshagent image --help
+$ meshagent llm --help
                                                                                 
- Usage: meshagent image [OPTIONS] COMMAND [ARGS]...                             
+ Usage: meshagent llm [OPTIONS] COMMAND [ARGS]...                               
                                                                                 
- Build and pack OCI images                                                      
+ Local LLM proxy utilities                                                      
                                                                                 
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │ --install-completion          Install completion for the current shell.      │
@@ -580,9 +809,7 @@ $ meshagent image --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ build   Build a container image inside a room.                               │
-│ deploy  Create or update a room service from an image, optionally building   │
-│         it first.                                                            │
-│ pack    Pack a local directory into an OCI image archive.                    │
+│ proxy   Expose a local MeshAgent-authenticated LLM proxy.                    │
+│ logger  Manage project LLM loggers                                           │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
