@@ -1,5 +1,5 @@
 ---
-description: Room lifecycle and room API operations in MeshAgent, including agents, storage, messaging, containers, services, database, memory, and sync.
+description: Room lifecycle and room API operations in MeshAgent, including agents, storage, messaging, containers, services, dataset, memory, and sync.
 argument-hint: "<room task>"
 ---
 
@@ -17,7 +17,7 @@ Use this command when the request targets a room or something running inside a r
 - `meshagent room storage ...`
 - `meshagent room service ...`
 - `meshagent room developer ...`
-- `meshagent room database ...`
+- `meshagent room dataset ...`
 - `meshagent room memory ...`
 - `meshagent room container ...`
 - `meshagent room sync ...`

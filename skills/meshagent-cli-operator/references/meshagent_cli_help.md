@@ -1,6 +1,6 @@
 # MeshAgent CLI Help
 
-_Packaged CLI help reference for MeshAgent CLI `0.38.2`._
+_Packaged CLI help reference for MeshAgent CLI `0.38.4`._
 
 _Generated from the installed `meshagent` binary with recursive `--help` capture up to depth 1 and timeout 2s per command._
 
@@ -23,8 +23,10 @@ $ meshagent --help
 │ auth                 Authenticate to meshagent                               │
 │ project              Manage or activate your meshagent projects              │
 │ api-key              Manage or activate api-keys for your project            │
+│ config               Read MeshAgent deployment configuration                 │
 │ session              Inspect recent sessions and events                      │
 │ ask                  Send a one-shot prompt through the LLM router           │
+│ launch               Launch CLI apps through MeshAgent                       │
 │ token                Generate participant tokens (JWTs)                      │
 │ webhook              Manage project webhooks                                 │
 │ service              Manage services for your project                        │
@@ -32,6 +34,8 @@ $ meshagent --help
 │ secret               Manage secrets for your project.                        │
 │ rooms                Create, list, and manage rooms in a project             │
 │ mailbox              Manage mailboxes for your project                       │
+│ feed                 Manage feeds for your project                           │
+│ subscription         Manage feed subscriptions for your project              │
 │ route                Manage routes for your project                          │
 │ registry             Manage registries for your project                      │
 │ build                Build a container image inside a room                   │
@@ -92,6 +96,7 @@ $ meshagent auth --help
 │ logout                                                                       │
 │ switch                                                                       │
 │ whoami                                                                       │
+│ token                                                                        │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -142,6 +147,26 @@ $ meshagent api-key --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## `meshagent config`
+
+```console
+$ meshagent config --help
+
+ Usage: meshagent config [OPTIONS] COMMAND [ARGS]...
+
+ Read MeshAgent deployment configuration
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ get  Print one deployment config value.                                      │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
 ## `meshagent session`
 
 ```console
@@ -189,6 +214,22 @@ $ meshagent ask --help
 │                                     installation.                            │
 │ --help                              Show this message and exit.              │
 ╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent launch`
+
+```console
+$ meshagent launch --help
+Usage: meshagent launch [OPTIONS] COMMAND [ARGS]...
+
+  Launch supported CLI apps through MeshAgent.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  claude  Launch Claude through MeshAgent for the active project.
+  codex   Launch Codex through MeshAgent for the active project.
 ```
 
 ## `meshagent token`
@@ -373,6 +414,56 @@ $ meshagent mailbox --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## `meshagent feed`
+
+```console
+$ meshagent feed --help
+
+ Usage: meshagent feed [OPTIONS] COMMAND [ARGS]...
+
+ Manage feeds for your project
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create      Create a feed.                                                   │
+│ update      Update a feed.                                                   │
+│ show        Show feed details.                                               │
+│ list        List feeds for the project.                                      │
+│ delete      Delete a feed.                                                   │
+│ send        Publish a single JSON message to a feed.                         │
+│ send-batch  Publish a JSONL file to a feed.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent subscription`
+
+```console
+$ meshagent subscription --help
+
+ Usage: meshagent subscription [OPTIONS] COMMAND [ARGS]...
+
+ Manage feed subscriptions for your project
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create  Create a feed subscription.                                          │
+│ update  Update a feed subscription.                                          │
+│ show    Show feed subscription details.                                      │
+│ list    List subscriptions for a feed.                                       │
+│ delete  Delete a feed subscription.                                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
 ## `meshagent route`
 
 ```console
@@ -439,7 +530,7 @@ $ meshagent build --help
 │    --project-id                          TEXT  A MeshAgent project id. If    │
 │                                                empty, the activated project  │
 │                                                will be used.                 │
-│    --room                                TEXT  Room name                     │
+│    --room                                TEXT  Existing room name.           │
 │ *  --tag                                 TEXT  Image tag to build. Supports  │
 │                                                <repository>:<tag>,           │
 │                                                <project-key>/<repository>:<… │
@@ -482,17 +573,24 @@ $ meshagent deploy --help
  Usage: meshagent deploy [OPTIONS] [PATH]
 
  Create or update a room service from an image, optionally building it first.
+ The target room must already exist. Happy path for a Dockerfile app: run
+ 'meshagent deploy PATH --room <room> --tag <tag> --public --domain <domain>'.
+ Use 'meshagent config get domains.pages' to find the pages domain for
+ --domain. If PATH does not include a Dockerfile yet, create a minimal
+ Dockerfile in the app directory first or create one elsewhere in PATH and pass
+ it with --dockerfile-path.
 
 ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
 │   pack      [PATH]  Local directory to stream as the build context before    │
 │                     deploy. Format '<path>[:<mount>]'. Defaults mount to     │
-│                     /context.                                                │
+│                     /context. PATH is typically the app directory you want   │
+│                     to deploy.                                               │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │    --project-id                            TEXT  A MeshAgent project id. If  │
 │                                                  empty, the activated        │
 │                                                  project will be used.       │
-│    --room                                  TEXT  Room name                   │
+│    --room                                  TEXT  Existing room name.         │
 │ *  --tag                                   TEXT  Image tag to deploy, e.g.   │
 │                                                  repo/name:tag. When used    │
 │                                                  with PATH, shorthand        │
@@ -509,7 +607,12 @@ $ meshagent deploy --help
 │    --dockerfile-path                       TEXT  Optional Dockerfile path    │
 │                                                  inside the packed build     │
 │                                                  context (absolute path).    │
-│                                                  Only used with PATH.        │
+│                                                  Only used with PATH. Use    │
+│                                                  this when the app directory │
+│                                                  has no top-level Dockerfile │
+│                                                  or when you create the      │
+│                                                  Dockerfile under a          │
+│                                                  different path.             │
 │    --optimize             --no-optimize          Whether to optimize room    │
 │                                                  image outputs to eStargz    │
 │                                                  during the build stage.     │
@@ -524,8 +627,15 @@ $ meshagent deploy --help
 │                                                  pack builds.                │
 │    --domain                                TEXT  Create or update a room     │
 │                                                  route for the deployed      │
-│                                                  service. Requires exactly   │
-│                                                  one published service port. │
+│                                                  service and return a public │
+│                                                  URL. Use this with --public │
+│                                                  when you need an external   │
+│                                                  URL from deploy. Use        │
+│                                                  'meshagent config get       │
+│                                                  domains.pages' to find the  │
+│                                                  pages domain for --domain.  │
+│                                                  Requires exactly one        │
+│                                                  published service port.     │
 │    --liveness                              TEXT  HTTP path to use for        │
 │                                                  service liveness checks.    │
 │                                                  Defaults to / for new or    │
@@ -560,6 +670,12 @@ $ meshagent deploy --help
 │                                                  created or updated.         │
 │                                                  Defaults to private.        │
 │                                                  [default: private]          │
+│    --wait                 --no-wait              Wait for the deployed       │
+│                                                  service to start, stream    │
+│                                                  container logs, and verify  │
+│                                                  the route liveness URL when │
+│                                                  --domain is provided.       │
+│                                                  [default: wait]             │
 │    --help                                        Show this message and exit. │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
@@ -709,7 +825,7 @@ $ meshagent room --help
 │ storage    Manage storage for a room                                         │
 │ service    Manage services in a room                                         │
 │ developer  Developer utilities for a room                                    │
-│ database   Manage database tables in a room                                  │
+│ dataset    Manage dataset tables in a room                                   │
 │ memory     Manage memories in a room                                         │
 │ container  Manage containers and images in a room                            │
 │ sync       Inspect and update mesh documents in a room                       │
@@ -733,6 +849,7 @@ $ meshagent llm --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ proxy  Expose a local MeshAgent-authenticated LLM proxy.                     │
+│ proxy   Expose a local MeshAgent-authenticated LLM proxy.                    │
+│ logger  Manage project LLM loggers                                           │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
