@@ -60,8 +60,6 @@ Use the following status values exactly:
   - `meshagent project activate PROJECT_ID`: allowed only when a room task clearly requires switching to a specific existing project first.
   - `meshagent project activate -i`: don't use, because the interactive flow can create a new project.
   - `meshagent project create`: don't use, because creating new projects is broader than this skill's room-focused scope.
-- `meshagent webhook`
-  Use only when the room task requires project-level webhook configuration tied to the room's workflow.
 - `meshagent secret`
   Don't use. Project secret management is broader than this skill's room-focused scope.
 - `meshagent mailbox`
@@ -77,7 +75,7 @@ Use the following status values exactly:
   Do not use. Initial CLI setup is out of scope for this skill.
 - `meshagent auth`
   Do not use. Interactive auth and user-session management are out of scope for this skill.
-- `meshagent api-key`
+- `meshagent service-account api-key`
   Do not use. API key creation and management are out of scope for this skill.
 - `meshagent token generate`
   Do not use. Minting participant tokens is broader than this skill's room-focused scope.

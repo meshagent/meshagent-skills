@@ -19,20 +19,23 @@ $ meshagent --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ version              Print the version                                       │
-│ setup                Perform initial login and project/api key activation.   │
+│ setup                Perform initial login and project activation.           │
 │ auth                 Authenticate to meshagent                               │
 │ project              Manage or activate your meshagent projects              │
-│ api-key              Manage or activate api-keys for your project            │
+│ service-account      Manage service accounts for your project                │
+│ iam                  Manage IAM policies for project resources               │
 │ config               Read MeshAgent deployment configuration                 │
+│ doctor               Inspect a project for MeshAgent deployment gaps         │
+│ create               Create a minimal deployable project                     │
 │ session              Inspect recent sessions and events                      │
 │ ask                  Send a one-shot prompt through the LLM router           │
 │ launch               Launch CLI apps through MeshAgent                       │
 │ token                Generate participant tokens (JWTs)                      │
-│ webhook              Manage project webhooks                                 │
 │ service              Manage services for your project                        │
 │ mcp                  Bridge MCP servers into MeshAgent rooms                 │
 │ secret               Manage secrets for your project.                        │
 │ rooms                Create, list, and manage rooms in a project             │
+│ agent                Create, list, and manage managed agents in a project    │
 │ mailbox              Manage mailboxes for your project                       │
 │ feed                 Manage feeds for your project                           │
 │ subscription         Manage feed subscriptions for your project              │
@@ -54,26 +57,30 @@ $ meshagent --help
 
 ```console
 $ meshagent version --help
-Usage: meshagent version [OPTIONS]
 
-  Print the version
+ Usage: meshagent version [OPTIONS]
 
-Options:
-  --help  Show this message and exit.
+ Print the version
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --help          Show this message and exit.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## `meshagent setup`
 
 ```console
 $ meshagent setup --help
-Usage: meshagent setup [OPTIONS]
 
-  Perform initial login and project/api key activation.
+ Usage: meshagent setup [OPTIONS]
 
-Options:
-  --api-url TEXT  Persist this API URL on the saved profile and use it for
-                  setup login.
-  --help          Show this message and exit.
+ Perform initial login and project activation.
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --api-url        TEXT  Persist this API URL on the saved profile and use it  │
+│                        for setup login.                                      │
+│ --help                 Show this message and exit.                           │
+╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## `meshagent auth`
@@ -118,18 +125,19 @@ $ meshagent project --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create    Create a new MeshAgent project.                                    │
 │ list      List projects and mark the currently active one.                   │
+│ get       Get a MeshAgent project.                                           │
 │ activate  Set the active project for subsequent CLI commands.                │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-## `meshagent api-key`
+## `meshagent service-account`
 
 ```console
-$ meshagent api-key --help
+$ meshagent service-account --help
 
- Usage: meshagent api-key [OPTIONS] COMMAND [ARGS]...
+ Usage: meshagent service-account [OPTIONS] COMMAND [ARGS]...
 
- Manage or activate api-keys for your project
+ Manage service accounts for your project
 
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │ --install-completion          Install completion for the current shell.      │
@@ -138,12 +146,34 @@ $ meshagent api-key --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ list      List API keys for a project.                                       │
-│ create    Create a new API key for a project.                                │
-│ show      Show the activated API key for a project.                          │
-│ env       Print the activated API key as a shell export snippet.             │
-│ activate  Set the default API key for a project in local CLI settings.       │
-│ delete    Delete an API key from a project.                                  │
+│ list     List service accounts for a project.                                │
+│ get      Get a service account.                                              │
+│ create   Create a service account for a project.                             │
+│ update   Update a service account.                                           │
+│ delete   Delete a service account.                                           │
+│ api-key  Manage API keys                                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent iam`
+
+```console
+$ meshagent iam --help
+
+ Usage: meshagent iam [OPTIONS] COMMAND [ARGS]...
+
+ Manage IAM policies for project resources
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ policy  List a resource IAM policy.                                          │
+│ grant   Grant roles on a resource.                                           │
+│ revoke  Revoke all direct roles for a subject.                               │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -167,6 +197,61 @@ $ meshagent config --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
+## `meshagent doctor`
+
+```console
+$ meshagent doctor --help
+
+ Usage: meshagent doctor [OPTIONS] [PATH]
+
+ Inspect the current directory for MeshAgent deployment gaps.
+
+╭─ Arguments ──────────────────────────────────────────────────────────────────╮
+│   path      [PATH]                                                           │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --fix           Create obvious missing project files such as Dockerfile or   │
+│                 pyproject.toml.                                              │
+│ --help          Show this message and exit.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent create`
+
+```console
+$ meshagent create --help
+
+ Usage: meshagent create [OPTIONS] [PATH]
+
+ Create a minimal deployable project.
+
+╭─ Arguments ──────────────────────────────────────────────────────────────────╮
+│   path      [PATH]                                                           │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --language     -l                      TEXT  Template language for           │
+│                                              non-interactive use. Supported: │
+│                                              python, javascript, typescript, │
+│                                              react, dotnet, dart/flutter.    │
+│ --focus                                TEXT  Project focus for               │
+│                                              non-interactive use. Use stable │
+│                                              IDs: webserver (Web App),       │
+│                                              backend-agent (Agent Toolkit),  │
+│                                              chatbot (OpenAI Chatbot),       │
+│                                              chatbot-anthropic (Anthropic    │
+│                                              Chatbot), chatbot-ui (Agent     │
+│                                              UI), room-chat (Room Chat),     │
+│                                              meeting-app (Meeting App), or   │
+│                                              contact-form (Contact Form).    │
+│ --interactive      --no-interactive          Run or bypass the interactive   │
+│                                              template picker. Defaults to    │
+│                                              interactive when attached to a  │
+│                                              TTY and language or focus is    │
+│                                              missing.                        │
+│ --help                                       Show this message and exit.     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
 ## `meshagent session`
 
 ```console
@@ -183,8 +268,9 @@ $ meshagent session --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ list  List recent sessions                                                   │
-│ show  Show events for a session                                              │
+│ list    List recent sessions                                                 │
+│ get     Get events for a session                                             │
+│ traces  List trace spans for a session as a tree                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -198,21 +284,34 @@ $ meshagent ask --help
  Send a one-shot LLM prompt.
 
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
-│ --project-id                  TEXT  A MeshAgent project id. If empty, the    │
-│                                     activated project will be used.          │
-│                                     [default: (dynamic)]                     │
-│ --message             -m      TEXT  Prompt to send to the LLM                │
-│ --format                      TEXT  Output format for non-interactive        │
-│                                     responses.                               │
-│                                     [default: text]                          │
-│ --model                       TEXT  Name of the LLM model to use             │
-│                                     [default: gpt-5.4]                       │
-│ --install-completion                Install completion for the current       │
-│                                     shell.                                   │
-│ --show-completion                   Show completion for the current shell,   │
-│                                     to copy it or customize the              │
-│                                     installation.                            │
-│ --help                              Show this message and exit.              │
+│ --project-id                                    TEXT  A MeshAgent project    │
+│                                                       id. If empty, the      │
+│                                                       activated project will │
+│                                                       be used.               │
+│                                                       [default: (dynamic)]   │
+│ --message             -m                        TEXT  Prompt to send to the  │
+│                                                       LLM                    │
+│ --format                                        TEXT  Output format for      │
+│                                                       non-interactive        │
+│                                                       responses.             │
+│                                                       [default: markdown]    │
+│ --model                                         TEXT  Name of the LLM model  │
+│                                                       to use                 │
+│                                                       [default: gpt-5.5]     │
+│ --preamble-rule           --no-preamble-rule          Include the default    │
+│                                                       rule asking the model  │
+│                                                       to send concise        │
+│                                                       pre-tool preambles.    │
+│                                                       [default:              │
+│                                                       preamble-rule]         │
+│ --install-completion                                  Install completion for │
+│                                                       the current shell.     │
+│ --show-completion                                     Show completion for    │
+│                                                       the current shell, to  │
+│                                                       copy it or customize   │
+│                                                       the installation.      │
+│ --help                                                Show this message and  │
+│                                                       exit.                  │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -220,16 +319,18 @@ $ meshagent ask --help
 
 ```console
 $ meshagent launch --help
-Usage: meshagent launch [OPTIONS] COMMAND [ARGS]...
 
-  Launch supported CLI apps through MeshAgent.
+ Usage: meshagent launch [OPTIONS] COMMAND [ARGS]...
 
-Options:
-  --help  Show this message and exit.
+ Launch supported CLI apps through MeshAgent.
 
-Commands:
-  claude  Launch Claude through MeshAgent for the active project.
-  codex   Launch Codex through MeshAgent for the active project.
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --help          Show this message and exit.                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ codex   Launch Codex through MeshAgent for the active project.               │
+│ claude  Launch Claude through MeshAgent for the active project.              │
+╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
 ## `meshagent token`
@@ -254,28 +355,6 @@ $ meshagent token --help
 │                                        shell, to copy it or customize the    │
 │                                        installation.                         │
 │    --help                              Show this message and exit.           │
-╰──────────────────────────────────────────────────────────────────────────────╯
-```
-
-## `meshagent webhook`
-
-```console
-$ meshagent webhook --help
-
- Usage: meshagent webhook [OPTIONS] COMMAND [ARGS]...
-
- Manage project webhooks
-
-╭─ Options ────────────────────────────────────────────────────────────────────╮
-│ --install-completion          Install completion for the current shell.      │
-│ --show-completion             Show completion for the current shell, to copy │
-│                               it or customize the installation.              │
-│ --help                        Show this message and exit.                    │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ create  Create a webhook                                                     │
-│ list    List webhooks                                                        │
-│ delete  Delete a webhook                                                     │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -307,7 +386,7 @@ $ meshagent service --help
 │                    rendered YAML.                                            │
 │ run                Run a local command and register it as a temporary room   │
 │                    service.                                                  │
-│ show               Show a services for the project.                          │
+│ get                Get a service for the project.                            │
 │ list               List all services for the project.                        │
 │ delete             Delete a service.                                         │
 ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -386,7 +465,33 @@ $ meshagent rooms --help
 │ update  Update a room's name (ID is preferred; name will be resolved to ID   │
 │         if needed).                                                          │
 │ list    List rooms in the project.                                           │
-│ get     Get a single room by name (handy for resolving the ID).              │
+│ get     Get a single room by name or ID.                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent agent`
+
+```console
+$ meshagent agent --help
+
+ Usage: meshagent agent [OPTIONS] COMMAND [ARGS]...
+
+ Create, list, and manage managed agents in a project
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ create  Create a managed agent in the project.                               │
+│ delete  Delete a managed agent from the project.                             │
+│ update  Update a managed agent configuration.                                │
+│ list    List managed agents in the project.                                  │
+│ get     Get a managed agent configuration.                                   │
+│ use     Use a managed agent over its websocket connection.                   │
+│ secret  Manage secrets for a managed agent                                   │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -408,7 +513,7 @@ $ meshagent mailbox --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create  Create a mailbox attached to the project.                            │
 │ update  Update a mailbox routing configuration.                              │
-│ show    Show mailbox details.                                                │
+│ get     Get mailbox details.                                                 │
 │ list    List mailboxes for the project.                                      │
 │ delete  Delete a mailbox.                                                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -432,7 +537,7 @@ $ meshagent feed --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create      Create a feed.                                                   │
 │ update      Update a feed.                                                   │
-│ show        Show feed details.                                               │
+│ get         Get feed details.                                                │
 │ list        List feeds for the project.                                      │
 │ delete      Delete a feed.                                                   │
 │ send        Publish a single JSON message to a feed.                         │
@@ -458,7 +563,7 @@ $ meshagent subscription --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create  Create a feed subscription.                                          │
 │ update  Update a feed subscription.                                          │
-│ show    Show feed subscription details.                                      │
+│ get     Get feed subscription details.                                       │
 │ list    List subscriptions for a feed.                                       │
 │ delete  Delete a feed subscription.                                          │
 ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -482,7 +587,7 @@ $ meshagent route --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create  Create a route attached to the project.                              │
 │ update  Update a route configuration.                                        │
-│ show    Show route details.                                                  │
+│ get     Get route details.                                                   │
 │ list    List routes for the project.                                         │
 │ delete  Delete a route.                                                      │
 ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -506,7 +611,7 @@ $ meshagent registry --help
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ create  Create a project registry repository.                                │
 │ update  Update a project registry repository.                                │
-│ show    Show registry details.                                               │
+│ get     Get registry details.                                                │
 │ list    List registries for the project.                                     │
 │ delete  Delete a project registry repository by id or name.                  │
 ╰──────────────────────────────────────────────────────────────────────────────╯
@@ -561,6 +666,9 @@ $ meshagent build --help
 │    --cred                                TEXT  Docker creds                  │
 │                                                (username,password) or        │
 │                                                (registry,username,password)  │
+│    --latest                                    Also publish the built image  │
+│                                                as :latest in the same        │
+│                                                repository.                   │
 │    --help                                      Show this message and exit.   │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
@@ -573,12 +681,14 @@ $ meshagent deploy --help
  Usage: meshagent deploy [OPTIONS] [PATH]
 
  Create or update a room service from an image, optionally building it first.
- The target room must already exist. Happy path for a Dockerfile app: run
- 'meshagent deploy PATH --room <room> --tag <tag> --public --domain <domain>'.
- Use 'meshagent config get domains.pages' to find the pages domain for
- --domain. If PATH does not include a Dockerfile yet, create a minimal
- Dockerfile in the app directory first or create one elsewhere in PATH and pass
- it with --dockerfile-path.
+ The target room must already exist. If .meshagent/deploy.yaml exists, deploy
+ prompts for template values in TUI mode and saves them to
+ .meshagent/values.yaml. Use `meshagent deploy describe` to inspect the local
+ deploy spec. Happy path for a Dockerfile app: run 'meshagent deploy PATH
+ --room <room> --tag <tag> --public --domain <domain>'. Use 'meshagent config
+ get domains.pages' to find the pages domain for --domain. If PATH does not
+ include a Dockerfile yet, create a minimal Dockerfile in the app directory
+ first or create one elsewhere in PATH and pass it with --dockerfile-path.
 
 ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
 │   pack      [PATH]  Local directory to stream as the build context before    │
@@ -625,6 +735,10 @@ $ meshagent deploy --help
 │    --builder-name                          TEXT  Optional reusable builder   │
 │                                                  name for streamed local     │
 │                                                  pack builds.                │
+│    --latest                                      Also publish the built PATH │
+│                                                  image as :latest in the     │
+│                                                  same repository. Only used  │
+│                                                  with PATH.                  │
 │    --domain                                TEXT  Create or update a room     │
 │                                                  route for the deployed      │
 │                                                  service and return a public │
@@ -636,6 +750,65 @@ $ meshagent deploy --help
 │                                                  pages domain for --domain.  │
 │                                                  Requires exactly one        │
 │                                                  published service port.     │
+│    --email                                 TEXT  Create or update a public   │
+│                                                  mailbox for the deployed    │
+│                                                  service. When a local       │
+│                                                  deploy template has an      │
+│                                                  email variable, that value  │
+│                                                  is used unless --email is   │
+│                                                  passed.                     │
+│    --values           -f                   TEXT  YAML file containing deploy │
+│                                                  template values. Can be     │
+│                                                  passed multiple times;      │
+│                                                  later files override        │
+│                                                  earlier files.              │
+│    --set                                   TEXT  Set a deploy template value │
+│                                                  as KEY=VALUE. Can be passed │
+│                                                  multiple times.             │
+│    --extra-port                            TEXT  Add an extra route path to  │
+│                                                  DOMAIN as TARGET:/path.     │
+│                                                  TARGET can be PORT,         │
+│                                                  SERVICE, or SERVICE:PORT.   │
+│                                                  Can be passed multiple      │
+│                                                  times. The target must      │
+│                                                  already be published by a   │
+│                                                  room service.               │
+│    --validation-mode                       TEXT  Request validation          │
+│                                                  annotation mode for private │
+│                                                  published service ports:    │
+│                                                  default, cookie, or none.   │
+│                                                  [default: default]          │
+│    --template                              TEXT  Allowed values: agent,      │
+│                                                  none. agent: MeshAgent      │
+│                                                  mounts room storage at      │
+│                                                  /data, sets                 │
+│                                                  MESHAGENT_TOKEN,            │
+│                                                  OPENAI_API_KEY, and         │
+│                                                  ANTHROPIC_API_KEY to a      │
+│                                                  container-scoped MeshAgent  │
+│                                                  token. agent also sets      │
+│                                                  SMTP_PASSWORD to that       │
+│                                                  token, SMTP_USERNAME to the │
+│                                                  container name, SMTP_PORT   │
+│                                                  to 587, SMTP_HOSTNAME from  │
+│                                                  MESHAGENT_MAIL_DOMAIN when  │
+│                                                  available, plus             │
+│                                                  OPENAI_BASE_URL,            │
+│                                                  ANTHROPIC_BASE_URL,         │
+│                                                  MESHAGENT_API_URL,          │
+│                                                  MESHAGENT_ROOM_URL,         │
+│                                                  MESHAGENT_ROOM,             │
+│                                                  MESHAGENT_PROJECT_ID,       │
+│                                                  MESHAGENT_SESSION_ID,       │
+│                                                  OTEL_ENDPOINT,              │
+│                                                  OTEL_PYTHON_LOG_LEVEL, and  │
+│                                                  MESHAGENT_MAIL_DOMAIN from  │
+│                                                  the room runtime when       │
+│                                                  available. Manual env       │
+│                                                  values win. none: MeshAgent │
+│                                                  applies no template         │
+│                                                  defaults.                   │
+│                                                  [default: agent]            │
 │    --liveness                              TEXT  HTTP path to use for        │
 │                                                  service liveness checks.    │
 │                                                  Defaults to / for new or    │
@@ -699,6 +872,7 @@ $ meshagent scheduled-task --help
 │ add     Add a scheduled task.                                                │
 │ list    List scheduled tasks.                                                │
 │ update  Update a scheduled task.                                             │
+│ runs    List runs for a scheduled task.                                      │
 │ delete  Delete a scheduled task.                                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
@@ -783,7 +957,7 @@ $ meshagent process --help
 
  Usage: meshagent process [OPTIONS] COMMAND [ARGS]...
 
- Join a process-backed agent to a room
+ Run process-backed agents
 
 ╭─ Options ────────────────────────────────────────────────────────────────────╮
 │ --install-completion          Install completion for the current shell.      │
@@ -792,13 +966,16 @@ $ meshagent process --help
 │ --help                        Show this message and exit.                    │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ join     Join a room and run a process-backed agent.                         │
-│ service  Add a process-backed agent service to the host.                     │
-│ spec     Generate a service spec for deploying a process-backed agent.       │
-│ deploy   Deploy a process-backed agent service.                              │
-│ run      Join a room, run a process-backed agent, and wait for messages.     │
-│ use      Send a one-shot or interactive message to a running process-backed  │
-│          agent.                                                              │
+│ join      Join a room and run a process-backed agent.                        │
+│ service   Add a process-backed agent service to the host.                    │
+│ spec      Generate a service spec for deploying a process-backed agent.      │
+│ deploy    Deploy a process-backed agent service.                             │
+│ run       Run a process-backed agent and wait for messages.                  │
+│ threads   List threads for a process-backed agent.                           │
+│ messages  List messages in a process-backed agent thread.                    │
+│ grep      Search coalesced messages in a process-backed agent thread.        │
+│ use       Send a one-shot or interactive message to a running process-backed │
+│           agent.                                                             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 

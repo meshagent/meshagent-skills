@@ -1,5 +1,5 @@
 ---
-description: Project-scoped MeshAgent administration for auth, projects, api keys, secrets, webhooks, routes, mailboxes, and scheduled tasks.
+description: Project-scoped MeshAgent administration for auth, projects, service accounts, api keys, secrets, routes, mailboxes, and scheduled tasks.
 argument-hint: "<project admin task>"
 ---
 
@@ -12,9 +12,10 @@ Use this command when the request is primarily about project-level administratio
 - `meshagent setup`
 - `meshagent auth ...`
 - `meshagent project ...`
-- `meshagent api-key ...`
+- `meshagent service-account ...`
+- `meshagent service-account api-key ...`
+- `meshagent iam ...`
 - `meshagent secret ...`
-- `meshagent webhook ...`
 - `meshagent mailbox ...`
 - `meshagent route ...`
 - `meshagent scheduled-task ...`
