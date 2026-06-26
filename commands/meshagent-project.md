@@ -1,5 +1,5 @@
 ---
-description: Project-scoped MeshAgent administration for auth, projects, service accounts, api keys, secrets, routes, mailboxes, and scheduled tasks.
+description: Project-scoped MeshAgent administration for auth, projects, service accounts, api keys, user/service-account secrets, routes, mailboxes, and scheduled tasks.
 argument-hint: "<project admin task>"
 ---
 
@@ -23,9 +23,10 @@ Use this command when the request is primarily about project-level administratio
 ## Operating rules
 
 1. Confirm the active project before making changes.
-2. Never print secret values unless the user explicitly asks for them and the command returns them.
-3. For create or update operations, restate the exact target resource first.
-4. Verify changes with a read command immediately afterward.
-5. Use [SKILL.md](../skills/meshagent-mail-operator/SKILL.md) for mailbox provisioning tied to room inbox or MailBot workflows.
-6. Use [SKILL.md](../skills/meshagent-scheduler/SKILL.md) for scheduled-task operations.
-7. Use [SKILL.md](../skills/meshagent-webmaster/SKILL.md) for route management or public hostname work backing room websites.
+2. Use `meshagent secret ... --subject me` or `meshagent secret ... --subject <service-account-email>` for credential management.
+3. Never print secret values unless the user explicitly asks for them and the command returns them.
+4. For create or update operations, restate the exact target resource first.
+5. Verify changes with a read command immediately afterward.
+6. Use [SKILL.md](../skills/meshagent-mail-operator/SKILL.md) for mailbox provisioning tied to room inbox or MailBot workflows.
+7. Use [SKILL.md](../skills/meshagent-scheduler/SKILL.md) for scheduled-task operations.
+8. Use [SKILL.md](../skills/meshagent-webmaster/SKILL.md) for route management or public hostname work backing room websites.

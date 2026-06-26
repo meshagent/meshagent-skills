@@ -61,7 +61,7 @@ Use the following status values exactly:
   - `meshagent project activate -i`: don't use, because the interactive flow can create a new project.
   - `meshagent project create`: don't use, because creating new projects is broader than this skill's room-focused scope.
 - `meshagent secret`
-  Don't use. Project secret management is broader than this skill's room-focused scope.
+  Use only when a room workflow needs user or service-account credential management.
 - `meshagent mailbox`
   Use for mailbox provisioning or inspection when a room workflow needs it.
 - `meshagent route`
@@ -84,7 +84,7 @@ Use the following status values exactly:
 - `meshagent project activate -i`
   Do not use. The interactive activation flow can create new projects and is too broad for this skill.
 - `meshagent secret`
-  Do not use. Project secret management is broader than this skill's room-focused scope.
+  User and service-account secret management is broader than this skill's room-focused scope.
 
 ## Preferred routing
 

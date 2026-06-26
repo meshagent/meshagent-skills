@@ -25,7 +25,7 @@ Use this command for any request that involves the MeshAgent CLI.
 
 This command is the generic entrypoint for:
 - auth and setup
-- projects, api keys, secrets, routes, webhooks, mailboxes, and scheduled tasks
+- projects, api keys, user/service-account secrets, routes, webhooks, mailboxes, and scheduled tasks
 - rooms, room APIs, ports, sessions, calls, and participant tokens
 - services, MCP bridges, and webservers
 - chatbot, worker, task-runner, mailbot, voicebot, process, codex, multi, and meeting-transcriber flows

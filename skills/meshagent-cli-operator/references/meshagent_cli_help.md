@@ -23,6 +23,7 @@ $ meshagent --help
 │ auth                 Authenticate to meshagent                               │
 │ project              Manage or activate your meshagent projects              │
 │ service-account      Manage service accounts for your project                │
+│ secret               Manage user and service account secrets                 │
 │ iam                  Manage IAM policies for project resources               │
 │ config               Read MeshAgent deployment configuration                 │
 │ doctor               Inspect a project for MeshAgent deployment gaps         │
@@ -33,7 +34,6 @@ $ meshagent --help
 │ token                Generate participant tokens (JWTs)                      │
 │ service              Manage services for your project                        │
 │ mcp                  Bridge MCP servers into MeshAgent rooms                 │
-│ secret               Manage secrets for your project.                        │
 │ rooms                Create, list, and manage rooms in a project             │
 │ agent                Create, list, and manage managed agents in a project    │
 │ mailbox              Manage mailboxes for your project                       │
@@ -152,6 +152,41 @@ $ meshagent service-account --help
 │ update   Update a service account.                                           │
 │ delete   Delete a service account.                                           │
 │ api-key  Manage API keys                                                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+## `meshagent secret`
+
+```console
+$ meshagent secret --help
+
+ Usage: meshagent secret [OPTIONS] COMMAND [ARGS]...
+
+ Manage secrets
+
+╭─ Options ────────────────────────────────────────────────────────────────────╮
+│ --install-completion          Install completion for the current shell.      │
+│ --show-completion             Show completion for the current shell, to copy │
+│                               it or customize the installation.              │
+│ --help                        Show this message and exit.                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Commands ───────────────────────────────────────────────────────────────────╮
+│ list                List secrets for a subject.                              │
+│ search              Search secrets for a subject.                            │
+│ get                 Get a secret for a subject.                              │
+│ create              Create a secret for a subject.                           │
+│ update              Update a secret for a subject.                           │
+│ delete              Delete a secret for a subject.                           │
+│ versions            List versions for a secret.                              │
+│ add-version         Add a new version to a secret.                           │
+│ access              List proxy access grants for one of your secrets.        │
+│ grant-proxy         Grant a service account proxy access to one of your      │
+│                     secrets.                                                 │
+│ revoke-proxy        Revoke a service account proxy access grant from one of  │
+│                     your secrets.                                            │
+│ pull-secrets        List pull secrets for a service account.                 │
+│ add-pull-secret     Add a pull secret to a service account.                  │
+│ remove-pull-secret  Remove a pull secret from a service account.             │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -418,32 +453,6 @@ $ meshagent mcp --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-## `meshagent secret`
-
-```console
-$ meshagent secret --help
-
- Usage: meshagent secret [OPTIONS] COMMAND [ARGS]...
-
- Manage secrets for your project.
-
-╭─ Options ────────────────────────────────────────────────────────────────────╮
-│ --install-completion          Install completion for the current shell.      │
-│ --show-completion             Show completion for the current shell, to copy │
-│                               it or customize the installation.              │
-│ --help                        Show this message and exit.                    │
-╰──────────────────────────────────────────────────────────────────────────────╯
-╭─ Commands ───────────────────────────────────────────────────────────────────╮
-│ list    List all secrets in the project (typed as Docker/ACR/GAR or Keys     │
-│         secrets).                                                            │
-│ delete  Delete a secret.                                                     │
-│ key     Create or update environment-based key-value secrets.                │
-│ docker  Create or update docker registry pull secrets.                       │
-│ acr     Create or update Azure Container Registry pull secrets.              │
-│ gar     Create or update Google Artifact Registry pull secrets.              │
-╰──────────────────────────────────────────────────────────────────────────────╯
-```
-
 ## `meshagent rooms`
 
 ```console
@@ -491,7 +500,6 @@ $ meshagent agent --help
 │ list    List managed agents in the project.                                  │
 │ get     Get a managed agent configuration.                                   │
 │ use     Use a managed agent over its websocket connection.                   │
-│ secret  Manage secrets for a managed agent                                   │
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
@@ -825,14 +833,17 @@ $ meshagent deploy --help
 │    --env              -e                   TEXT  Set environment variable as │
 │                                                  KEY=VALUE                   │
 │    --env-secret                            TEXT  Set environment variable    │
-│                                                  from a room secret as       │
-│                                                  NAME=SECRET_ID              │
+│                                                  from a service account      │
+│                                                  secret as NAME=SECRET_ID    │
 │    --identity                              TEXT  Identity name to use for    │
-│                                                  --meshagent-token and       │
-│                                                  --env-secret. Defaults to   │
-│                                                  the current token identity  │
-│                                                  or the derived service      │
-│                                                  name.                       │
+│                                                  --meshagent-token. Defaults │
+│                                                  to the current token        │
+│                                                  identity or the derived     │
+│                                                  service name.               │
+│    --run-as                                TEXT  Service account email the   │
+│                                                  deployed container runs as. │
+│                                                  Required when using         │
+│                                                  --env-secret.               │
 │    --meshagent-token                       TEXT  Inject MESHAGENT_TOKEN      │
 │                                                  using userDefault,          │
 │                                                  agentDefault, full, or a    │
@@ -996,7 +1007,6 @@ $ meshagent room --help
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ╭─ Commands ───────────────────────────────────────────────────────────────────╮
 │ agents     Interact with agents and toolkits                                 │
-│ secret     Manage secrets in a room                                          │
 │ queue      Use queues in a room                                              │
 │ messaging  Send and receive messages                                         │
 │ storage    Manage storage for a room                                         │

@@ -11,7 +11,6 @@ Use this command when the request targets a room or something running inside a r
 
 - `meshagent rooms ...`
 - `meshagent room agent ...`
-- `meshagent room secret ...`
 - `meshagent room queue ...`
 - `meshagent room messaging ...`
 - `meshagent room storage ...`
