@@ -45,16 +45,16 @@ Use this skill for domain mappings, what they do, and the sample static webserve
 - Deleting a route removes public exposure for that hostname.
 - Always verify the target room and port before mutating a route.
 
-## Static webserver example
+## Live website preview example
 
-This is the sample static webserver YAML from the MeshAgent server repository. It shows a simple static HTTP server that exposes raw files from room storage:
+This is the live website preview YAML from the MeshAgent server repository. It serves current files from room storage and defaults to signed-in access:
 
 ```yaml
 version: v1
 kind: ServiceTemplate
 metadata:
-  name: web server
-  description: Publish a website for this room with the contents of the "website" folder. 
+  name: live website preview
+  description: Preview a website from the live contents of this room's "website" folder.
   annotations:
     meshagent.service.id: meshagent.webserver
 variables:
@@ -63,9 +63,14 @@ variables:
     optional: false
     annotations:
       meshagent.route.port: "5002"
+  - name: access
+    optional: false
+    enum:
+      - private
+      - public
 container:
-  image: busybox
-  command: sh -c "httpd -f -p 5002 -h /data"
+  image: meshagent/website:default
+  command: /website --listen 0.0.0.0:5002 --directory /data
   storage:
     room:
       - path: /data
@@ -73,9 +78,13 @@ container:
 ports:
   - num: 5002
     type: http
-    public: true
+    public: {% if access|default("private") == "public" %}true{% else %}false{% endif %}
     published: true
     liveness: /
+{% if access|default("private") != "public" %}
+    annotations:
+      meshagent.request.validation.method: cookie
+{% endif %}
 ```
 
 This example is for serving static HTML, CSS, JavaScript, and similar assets. It is only a reference example, not a website-building guide.
